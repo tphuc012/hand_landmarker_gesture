@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## **2.1.1 - 2025-10-27**
+
+### **🐛 Bug Fixes**
+
+* Fixed a `java.lang.UnsatisfiedLinkError` crash on 32-bit (`armeabi-v7a`) devices by updating the native MediaPipe `tasks-vision` dependency to `0.10.26.1`. (Fixes [#1](https://github.com/IoT-gamer/hand_landmarker/issues/1))
+
+
 ## **2.1.0 - 2025-07-15**
 
 ### **✨ Features**
