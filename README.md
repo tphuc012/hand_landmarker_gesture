@@ -201,6 +201,13 @@ class Landmark {
   final double z;  
 }
 ```
+## Additional Examples
+
+You can find additional example projects and gists demonstrating the use of this plugin here:
+
+- [flutter-hand-landmark-full-screen.dart](https://gist.github.com/IoT-gamer/5559b176429739385832d8e4fa263e06)
+- [flutter_flame_finger_tracking_demo](https://github.com/IoT-gamer/flutter_flame_finger_tracking_demo)
+- [flutter_flame_hand_grasping_demo](https://github.com/IoT-gamer/flutter_flame_hand_grasping_demo)
 
 ## License
 
