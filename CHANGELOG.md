@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## **2.1.2 - 2025-11-03**
+
+### **🐛 Bug Fixes**
+
+* Fixed potential crashes in Android release builds by adding consumer ProGuard rules. This ensures MediaPipe's essential classes are not stripped by R8. ([46a978a](https://github.com/IoT-gamer/hand_landmarker/commit/46a978a6313951804f4529c91203698a43df4539))
+
+### **🛠️ Maintenance**
+
+* Updated `camera` plugin dependency to version `0.11.3`.
+
+### **📝 Documentation**
+
+* Added additional examples for plugin usage in `README.md`.
+
 ## **2.1.1 - 2025-10-27**
 
 ### **🐛 Bug Fixes**
