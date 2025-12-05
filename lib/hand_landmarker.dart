@@ -40,10 +40,9 @@ class HandLandmarkerPlugin {
     HandLandmarkerDelegate delegate = HandLandmarkerDelegate.gpu,
   }) {
     // Create the native MyHandLandmarker object.
-    final contextRef = Jni.getCachedApplicationContext();
-    final contextObj = JObject.fromReference(contextRef);
+    final contextObj = Jni.androidApplicationContext;
+
     final landmarker = MyHandLandmarker(contextObj);
-    contextObj.release(); // Release the JObject wrapper.
 
     // Initialize the native landmarker with the provided options.
     landmarker.initialize(

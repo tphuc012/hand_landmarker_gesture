@@ -20,16 +20,16 @@ dependencies:
   flutter:
     sdk: flutter
   # jni is required at runtime by the plugin's code.
-  jni: ^0.14.2
+  jni: ^0.15.2
   camera: ^0.11.3
-  plugin_platform_interface: ^2.0.2
+  plugin_platform_interface: ^2.1.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
   # jnigen is a development tool for generating code, not a runtime dependency.
-  jnigen: ^0.14.2
+  jnigen: ^0.15.0
 
 flutter:
   plugin:
