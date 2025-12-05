@@ -23,10 +23,7 @@ class Landmark {
   Landmark(this.x, this.y, this.z);
 }
 
-enum HandLandmarkerDelegate {
-  CPU,
-  GPU,
-}
+enum HandLandmarkerDelegate { cpu, gpu }
 
 /// The main class for the Hand Landmarker plugin.
 class HandLandmarkerPlugin {
@@ -40,7 +37,7 @@ class HandLandmarkerPlugin {
   static HandLandmarkerPlugin create({
     int numHands = 2,
     double minHandDetectionConfidence = 0.5,
-    HandLandmarkerDelegate delegate = HandLandmarkerDelegate.GPU,
+    HandLandmarkerDelegate delegate = HandLandmarkerDelegate.gpu,
   }) {
     // Create the native MyHandLandmarker object.
     final contextRef = Jni.getCachedApplicationContext();
@@ -52,7 +49,7 @@ class HandLandmarkerPlugin {
     landmarker.initialize(
       numHands,
       minHandDetectionConfidence,
-      delegate == HandLandmarkerDelegate.GPU,
+      delegate == HandLandmarkerDelegate.gpu,
     );
 
     return HandLandmarkerPlugin._(landmarker);

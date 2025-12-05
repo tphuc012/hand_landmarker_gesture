@@ -96,7 +96,7 @@ class _HandTrackerViewState extends State<HandTrackerView> {
     _plugin = HandLandmarkerPlugin.create(
       numHands: 2, // The maximum number of hands to detect.
       minHandDetectionConfidence: 0.7, // The minimum confidence score for detection.
-      delegate: HandLandmarkerDelegate.GPU, // The processing delegate (GPU or CPU).
+      delegate: HandLandmarkerDelegate.gpu, // The processing delegate (GPU or CPU).
     );
 
     // Initialize the camera and start the image stream  

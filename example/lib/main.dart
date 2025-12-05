@@ -66,7 +66,7 @@ class _HandTrackerViewState extends State<HandTrackerView> {
     _plugin = HandLandmarkerPlugin.create(
       numHands: 2,
       minHandDetectionConfidence: 0.7,
-      delegate: HandLandmarkerDelegate.GPU,
+      delegate: HandLandmarkerDelegate.gpu,
     );
 
     await _controller!.initialize();
