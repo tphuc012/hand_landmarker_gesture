@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## **2.2.0 - 2025-12-13**
+
+### **💥 Breaking Changes**
+
+* **Delegate Enum Case Change**: The values for the `HandLandmarkerDelegate` enum have been changed from `ALL_CAPS` (`CPU`, `GPU`) to **`lowerCamelCase`** (`cpu`, `gpu`) to adhere to Dart linter standards.
+    * **Action Required**: Users must update all usage from `HandLandmarkerDelegate.CPU` or `HandLandmarkerDelegate.GPU` to `HandLandmarkerDelegate.cpu` or `HandLandmarkerDelegate.gpu` respectively.
+
+### **🛠️ Maintenance**
+
+* **Major Build Toolchain Upgrade**: Modernized the Android build configuration for both the plugin and the example app. **Note**: This update requires a compatible development environment, including **JDK 17** and **Android Studio Giraffe (or newer)**, to successfully build the plugin.
+    * Upgraded **Android Gradle Plugin (AGP)** to `8.11.1`.
+    * Retained **Kotlin** at `2.1.0` due to current `jnigen` toolchain limitations.
+    * Updated **Java** source/target compatibility and `jvmTarget` to `VERSION_17` (previously `VERSION_11`).
+    * Updated `compileSdk` to `36`.
+    * Updated the Gradle Wrapper to version `8.14`.
+* **Dependency Updates**: Updated core dependencies: `jni`to `0.15.2` and `jnigen` to `0.15.0`, and `plugin_platform_interface` to `2.1.8`.
+
 ## **2.1.2 - 2025-11-03**
 
 ### **🐛 Bug Fixes**
