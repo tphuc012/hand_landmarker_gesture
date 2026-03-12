@@ -1,8 +1,8 @@
 name: hand_landmarker_gesture
 description: A Flutter plugin for real-time hand landmark detection on Android using Google's MediaPipe Hand Landmarker task and a JNI bridge.
-repository: https://github.com/tphuc012/hand_landmarker
-issue_tracker: https://github.com/tphuc012/hand_landmarker/issues
-homepage: https://github.com/tphuc012/hand_landmarker
+repository: https://github.com/tphuc012/hand_landmarker_gesture
+issue_tracker: https://github.com/tphuc012/hand_landmarker_gesture/issues
+homepage: https://github.com/tphuc012/hand_landmarker_gesture
 version: 2.3.0
 
 topics:
