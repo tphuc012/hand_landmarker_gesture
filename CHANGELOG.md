@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## **2.3.0 - 2026-03-12**
+
+### **✨ Features**
+
+* **Updated Data Models**: Enhanced data model structures to properly include gesture and handedness information with confidence scores for more detailed hand analysis.
+
+
+### **🛠️ Maintenance**
+
+* Updated `pubspec.yaml` with latest dependency versions and repository links.
+* Improved code organization with better comments and structure in the example application.
+
 ## **2.2.0 - 2025-12-13**
 
 ### **💥 Breaking Changes**

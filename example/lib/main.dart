@@ -113,6 +113,291 @@ class _HandTrackerViewState extends State<HandTrackerView> {
     }
   }
 
+  Widget _buildGestureInfo() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.black.withOpacity(0.7),
+            Colors.black.withOpacity(0.3),
+          ],
+        ),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: _landmarks.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.pan_tool,
+                    size: 48,
+                    color: Colors.white38,
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'No hands detected',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : ListView.builder(
+              shrinkWrap: true,
+              itemCount: _landmarks.length,
+              itemBuilder: (context, index) {
+                final hand = _landmarks[index];
+                final gestureScore = hand.gesture.score;
+                final handednessScore = hand.handedness.score;
+                final isLeftHand = hand.handedness.name.toLowerCase().contains('left');
+                
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white.withOpacity(0.1),
+                          Colors.white.withOpacity(0.05),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: Colors.white.withOpacity(0.2),
+                        width: 1.5,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.3),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Header with hand number and icon
+                        Row(
+                          children: [
+                            Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.blue.shade400,
+                                    Colors.blue.shade600,
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  isLeftHand
+                                      ? Icons.back_hand
+                                      : Icons.front_hand,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Hand ${index + 1}',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 0.5,
+                                  ),
+                                ),
+                                Text(
+                                  '${hand.handedness.name} Hand',
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.7),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        // Info cards in a grid
+                        Row(
+                          children: [
+                            // Gesture Card
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.amber.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: Colors.amber.withOpacity(0.3),
+                                    width: 1,
+                                  ),
+                                ),
+                                padding: const EdgeInsets.all(12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.pan_tool,
+                                          color: Colors.amber[300],
+                                          size: 16,
+                                        ),
+                                        const SizedBox(width: 6),
+                                        const Text(
+                                          'Gesture',
+                                          style: TextStyle(
+                                            color: Colors.amber,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      hand.gesture.name,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    // Progress bar
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(4),
+                                      child: LinearProgressIndicator(
+                                        value: gestureScore,
+                                        minHeight: 4,
+                                        backgroundColor:
+                                            Colors.amber.withOpacity(0.2),
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          Colors.amber[300]!,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      '${(gestureScore * 100).toStringAsFixed(0)}%',
+                                      style: TextStyle(
+                                        color: Colors.amber.withOpacity(0.9),
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            // Handedness Card
+                            Expanded(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.green.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: Colors.green.withOpacity(0.3),
+                                    width: 1,
+                                  ),
+                                ),
+                                padding: const EdgeInsets.all(12),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.info_outline,
+                                          color: Colors.green[300],
+                                          size: 16,
+                                        ),
+                                        const SizedBox(width: 6),
+                                        const Text(
+                                          'Confidence',
+                                          style: TextStyle(
+                                            color: Colors.lightGreen,
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      hand.handedness.name,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    // Progress bar
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(4),
+                                      child: LinearProgressIndicator(
+                                        value: handednessScore,
+                                        minHeight: 4,
+                                        backgroundColor:
+                                            Colors.green.withOpacity(0.2),
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          Colors.green[300]!,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      '${(handednessScore * 100).toStringAsFixed(0)}%',
+                                      style: TextStyle(
+                                        color: Colors.green.withOpacity(0.9),
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Show a loading indicator while initializing.
@@ -132,6 +417,7 @@ class _HandTrackerViewState extends State<HandTrackerView> {
           child: Stack(
             children: [
               CameraPreview(controller),
+              _buildGestureInfo(),
               CustomPaint(
                 // Tell the painter to fill the available space
                 size: Size.infinite,

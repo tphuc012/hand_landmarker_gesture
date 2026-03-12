@@ -1,9 +1,9 @@
 name: hand_landmarker
 description: A Flutter plugin for real-time hand landmark detection on Android using Google's MediaPipe Hand Landmarker task and a JNI bridge.
-repository: https://github.com/IoT-gamer/hand_landmarker
-issue_tracker: https://github.com/IoT-gamer/hand_landmarker/issues
-homepage: https://github.com/IoT-gamer/hand_landmarker
-version: 2.2.0
+repository: https://github.com/tphuc012/hand_landmarker
+issue_tracker: https://github.com/tphuc012/hand_landmarker/issues
+homepage: https://github.com/tphuc012/hand_landmarker
+version: 2.3.0
 
 topics:
   - hand-tracking
@@ -20,16 +20,16 @@ dependencies:
   flutter:
     sdk: flutter
   # jni is required at runtime by the plugin's code.
-  jni: ^0.15.2
-  camera: ^0.11.3
-  plugin_platform_interface: ^2.1.8
+  jni: '>=0.15.0 <1.0.0'
+  camera: '>=0.11.0 <1.0.0'
+  plugin_platform_interface: '>=2.1.0 <3.0.0'
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: '>=5.0.0 <6.0.0'
   # jnigen is a development tool for generating code, not a runtime dependency.
-  jnigen: ^0.15.0
+  jnigen: '>=0.15.0 <1.0.0'
 
 flutter:
   plugin:

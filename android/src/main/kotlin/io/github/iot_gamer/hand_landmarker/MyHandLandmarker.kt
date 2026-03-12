@@ -10,13 +10,13 @@ import com.google.mediapipe.framework.image.MPImage
 import com.google.mediapipe.tasks.core.BaseOptions
 import com.google.mediapipe.tasks.core.Delegate
 import com.google.mediapipe.tasks.vision.core.ImageProcessingOptions
-import com.google.mediapipe.tasks.vision.handlandmarker.HandLandmarker
+import com.google.mediapipe.tasks.vision.gesturerecognizer.GestureRecognizer
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
 
 class MyHandLandmarker(private val context: Context) {
 
-    private var handLandmarker: HandLandmarker? = null
+    private var gestureRecognizer: GestureRecognizer? = null
 
     fun initialize(
         numHands: Int,
@@ -25,16 +25,16 @@ class MyHandLandmarker(private val context: Context) {
     ) {
         val delegate = if (useGpu) Delegate.GPU else Delegate.CPU
         val baseOptions = BaseOptions.builder()
-            .setModelAssetPath("hand_landmarker.task")
+            .setModelAssetPath("gesture_recognizer.task")
             .setDelegate(delegate)
             .build()
-        val options = HandLandmarker.HandLandmarkerOptions.builder()
+        val options = GestureRecognizer.GestureRecognizerOptions.builder()
             .setBaseOptions(baseOptions)
             .setNumHands(numHands)
             .setRunningMode(com.google.mediapipe.tasks.vision.core.RunningMode.IMAGE)
             .setMinHandDetectionConfidence(minHandDetectionConfidence)
             .build()
-        handLandmarker = HandLandmarker.createFromOptions(context, options)
+        gestureRecognizer = GestureRecognizer.createFromOptions(context, options)
     }
 
     /**
@@ -52,7 +52,7 @@ class MyHandLandmarker(private val context: Context) {
         uvPixelStride: Int,
         rotation: Int
     ): String {
-        if (handLandmarker == null) {
+        if (gestureRecognizer == null) {
             // Default initialization if not already configured
             initialize(2, 0.5f, true)
         }
@@ -79,7 +79,7 @@ class MyHandLandmarker(private val context: Context) {
             .build()
 
         // 3. Run detection.
-        val result = handLandmarker?.detect(mpImage, imageProcessingOptions)
+        val result = gestureRecognizer?.recognize(mpImage, imageProcessingOptions)
 
         // 4. Clean up and build the JSON result.
         bitmap.recycle()
@@ -89,11 +89,14 @@ class MyHandLandmarker(private val context: Context) {
             return "[]"
         }
 
-        // Build a JSON string of the landmarks
+        // Build a JSON string with landmarks, gesture, and handedness per hand
         val handsJson = StringBuilder()
         handsJson.append("[")
         result.landmarks().forEachIndexed { handIndex, handLandmarks ->
-            handsJson.append("[")
+            handsJson.append("{")
+
+            // Landmarks
+            handsJson.append("\"landmarks\":[")
             handLandmarks.forEachIndexed { landmarkIndex, landmark ->
                 handsJson.append("{")
                 handsJson.append("\"x\":${landmark.x()},")
@@ -104,7 +107,23 @@ class MyHandLandmarker(private val context: Context) {
                     handsJson.append(",")
                 }
             }
-            handsJson.append("]")
+            handsJson.append("],")
+
+            // Gesture (top result per hand)
+            val gesture = result.gestures().getOrNull(handIndex)?.firstOrNull()
+            handsJson.append("\"gesture\":{")
+            handsJson.append("\"name\":\"${gesture?.categoryName() ?: ""}\",")
+            handsJson.append("\"score\":${gesture?.score() ?: 0f}")
+            handsJson.append("},")
+
+            // Handedness (Left / Right)
+            val handedness = result.handednesses().getOrNull(handIndex)?.firstOrNull()
+            handsJson.append("\"handedness\":{")
+            handsJson.append("\"name\":\"${handedness?.categoryName() ?: ""}\",")
+            handsJson.append("\"score\":${handedness?.score() ?: 0f}")
+            handsJson.append("}")
+
+            handsJson.append("}")
             if (handIndex < result.landmarks().size - 1) {
                 handsJson.append(",")
             }

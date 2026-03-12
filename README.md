@@ -11,10 +11,11 @@ This plugin provides a simple Dart API that hides the complexity of native code 
 ## Features
 
 * **Live Hand Tracking**: Performs real-time detection of hand landmarks from a CameraImage stream.  
+* **Gesture Recognition**: Detects hand gestures (e.g., thumbs up, peace sign, pointing, open palm, closed fist, etc.) with confidence scores.  
 * **High Performance & Customizable**: Leverages the native Android MediaPipe library with a configurable **delegate (GPU or CPU)** for highly performant ML inference. You can also configure the number of hands to detect and the detection confidence. 
-* **Simple, Type-Safe API**: Provides clean Dart data models (Hand, Landmark) for the detection results.  
+* **Simple, Type-Safe API**: Provides clean Dart data models (Hand, Landmark, Gesture) for the detection results.  
 * **Resource Management**: Includes a dispose() method to properly clean up all native resources.  
-* **Bundled Model**: The required [hand_landmarker.task](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker#models) model is bundled with the plugin, so no manual setup is required.
+* **Bundled Model**: The required [gesture_recognizer.task](https://ai.google.dev/edge/mediapipe/solutions/vision/gesture_recognizer#models) model is bundled with the plugin, so no manual setup is required.
 
 ## How it Works
 
@@ -23,8 +24,8 @@ The plugin follows a highly efficient architecture that minimizes cross-language
 1. **Camera Stream (Flutter)**: Your application provides a stream of CameraImage frames, which are in YUV format.  
 2. **JNI Bridge (Dart -> Kotlin)**: The raw YUV image planes (y, u, v buffers) and their metadata are passed directly to the native Android side via a JNI bridge. This avoids any expensive image conversion in Dart.  
 3. **Native Image Processing (Kotlin)**: The native code reconstructs an image from the YUV planes that MediaPipe can process.  
-4. **GPU-Accelerated Detection (Kotlin)**: The native code uses the MediaPipe HandLandmarker task, configured with the **GPU delegate**, to detect hand landmarks in the image.  
-5. **Return** to **Flutter**: The detection results are serialized to JSON and returned synchronously to Dart, where they are parsed into the clean data models (List<Hand>).
+4. **GPU-Accelerated Detection (Kotlin)**: The native code uses the MediaPipe HandLandmarker task, configured with the **GPU delegate**, to detect hand landmarks and recognize hand gestures in the image.  
+5. **Return** to **Flutter**: The detection results (landmarks and recognized gestures with confidence scores) are serialized to JSON and returned synchronously to Dart, where they are parsed into the clean data models (List<Hand>).
 
 ## Getting Started
 
@@ -40,7 +41,7 @@ Add the following dependencies to your app's pubspec.yaml file:
 
 ```yaml
 dependencies:  
-  hand_landmarker: ^2.2.0 # Use the latest version
+  hand_landmarker_gesture: ^2.3.0 # Use the latest version
 ```
 
 Then, run `flutter pub get`.
@@ -151,7 +152,7 @@ Create a method to pass the `CameraImage` to the plugin's detect method. Since t
 
 ### 3. Render the Results
 
-You can now use the `_landmarks` list in a `CustomPainter` to draw the results over your `CameraPreview`.
+You can now use the `_landmarks` list in a `CustomPainter` to draw the results over your `CameraPreview`. You can also access gesture information and confidence scores from each Hand object.
 
 ```dart
   @override  
@@ -178,16 +179,22 @@ You can now use the `_landmarks` list in a `CustomPainter` to draw the results o
 
 ## Data Models
 
-The plugin returns a `List<Hand>`. Each Hand object contains a list of 21 Landmark objects.
+The plugin returns a `List<Hand>`. Each Hand object contains a list of 21 Landmark objects, a Gesture object with a confidence score, and Handedness information.
 
 ### Hand
 
-A detected hand.
+A detected hand with its landmarks, recognized gesture, and handedness.
 
 ```dart
 class Hand {  
   /// A list of 21 landmarks for the detected hand.  
   final List<Landmark> landmarks;  
+  
+  /// The top recognized gesture for this hand.  
+  final Gesture gesture;  
+  
+  /// The handedness (Left / Right) for this hand.  
+  final Handedness handedness;  
 }
 ```
 
@@ -200,6 +207,34 @@ class Landmark {
   final double x;  
   final double y;  
   final double z;  
+}
+```
+
+### Gesture
+
+A recognized hand gesture with its name and confidence score.
+
+```dart
+class Gesture {  
+  /// The name of the detected gesture (e.g., 'Thumb_Up', 'Peace_Sign', 'Pointing_Up', 'Open_Palm', 'Closed_Fist').  
+  final String name;  
+  
+  /// The confidence score for the gesture detection (between 0.0 and 1.0).  
+  final double score;  
+}
+```
+
+### Handedness
+
+The handedness (Left or Right) of the detected hand with its confidence score.
+
+```dart
+class Handedness {  
+  /// The handedness name ('Left' or 'Right').  
+  final String name;  
+  
+  /// The confidence score for the handedness classification (between 0.0 and 1.0).  
+  final double score;  
 }
 ```
 ## Additional Examples
@@ -216,5 +251,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgements
 
+* [**IoT-gamer**](https://github.com/IoT-gamer/hand_landmarker) for the original Flutter Hand Landmarker plugin implementation.
 * The [**`jni`**](https://pub.dev/packages/jni) and [**`jnigen`**](https://pub.dev/packages/jnigen) teams for making this Flutter-to-native communication possible.
-* The Google [**MediaPipe**](https://developers.google.com/mediapipe) team for providing the powerful hand landmark detection model.
+* The Google [**MediaPipe**](https://developers.google.com/mediapipe) team for providing the powerful hand landmark detection and gesture recognition models.
