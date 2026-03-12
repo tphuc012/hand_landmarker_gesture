@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hand_landmarker/hand_landmarker.dart';
+import 'package:hand_landmarker_gesture/hand_landmarker_gesture.dart';
 import 'package:integration_test/integration_test.dart';
 
 void main() {

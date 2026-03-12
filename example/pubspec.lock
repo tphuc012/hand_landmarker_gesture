@@ -170,13 +170,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  hand_landmarker:
+  hand_landmarker_gesture:
     dependency: "direct main"
     description:
       path: ".."
       relative: true
     source: path
-    version: "2.2.0"
+    version: "2.3.0"
   integration_test:
     dependency: "direct dev"
     description: flutter

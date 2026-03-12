@@ -1,5 +1,5 @@
 name: hand_landmarker_example
-description: "Demonstrates how to use the hand_landmarker plugin."
+description: "Demonstrates how to use the hand_landmarker_gesture plugin."
 publish_to: 'none'
 
 environment:
@@ -12,7 +12,7 @@ dependencies:
   # The example app's only runtime dependency is the plugin itself.
   # All other necessary packages (camera, jni, etc.) are brought in
   # transitively by the hand_landmarker plugin.
-  hand_landmarker:
+  hand_landmarker_gesture:
     path: ../
 
   # UI packages like this are fine to keep as a direct dependency.

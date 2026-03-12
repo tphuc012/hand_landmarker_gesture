@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hand_landmarker/hand_landmarker.dart';
+import 'package:hand_landmarker_gesture/hand_landmarker_gesture.dart';
 
 // A helper function to replicate the parsing logic from the plugin.
 // This makes the tests self-contained and easy to understand.

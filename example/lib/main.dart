@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:math' as math;
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // Import the plugin's main class.
-import 'package:hand_landmarker/hand_landmarker.dart';
+import 'package:hand_landmarker_gesture/hand_landmarker_gesture.dart';
 
 late List<CameraDescription> _cameras;
 
